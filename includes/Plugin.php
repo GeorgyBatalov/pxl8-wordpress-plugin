@@ -13,6 +13,7 @@ use Pxl8\WordPress\Storage\Options;
 use Pxl8\WordPress\Storage\AttachmentMeta;
 use Pxl8\WordPress\Diagnostics\Logger;
 use Pxl8\WordPress\Media\UploadHandler;
+use Pxl8\WordPress\Media\UrlRewriter;
 
 class Plugin {
     /**
@@ -46,6 +47,11 @@ class Plugin {
     private $uploadHandler;
 
     /**
+     * @var UrlRewriter
+     */
+    private $urlRewriter;
+
+    /**
      * Initialize plugin
      */
     public function init() {
@@ -70,6 +76,14 @@ class Plugin {
         );
         $this->uploadHandler->init();
 
+        // Initialize Day 3 components (URL rewriter)
+        $this->urlRewriter = new UrlRewriter(
+            $this->options,
+            $this->attachmentMeta,
+            $this->logger
+        );
+        $this->urlRewriter->init();
+
         // Register hooks
         $this->registerHooks();
     }
@@ -81,8 +95,8 @@ class Plugin {
         // Admin hooks
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
 
-        // Note: UploadHandler registers its own hooks in init()
-        // TODO: Add URL rewriter hooks (Day 3)
+        // Note: UploadHandler and UrlRewriter register their own hooks in init()
+        // TODO: Add quota widget hooks (Day 4)
     }
 
     /**
