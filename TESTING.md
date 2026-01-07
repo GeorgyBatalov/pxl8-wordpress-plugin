@@ -5,17 +5,19 @@ Manual smoke testing guide for Docker test environment.
 ## Prerequisites
 
 - Docker Desktop installed and running
-- Composer installed
 - PXL8 API key (test or production)
+- pxl8-sdk-php directory at `../pxl8-sdk-php` (sibling directory)
 
-## Step 1: Install Composer Dependencies
+## Step 1: Install Dependencies
 
 ```bash
 cd /Users/chefbot/RiderProjects/pxl8/wordpress-plugin
-composer install
+
+# Copy SDK files to vendor directory
+cp -r ../pxl8-sdk-php vendor/pxl8/sdk-php
 ```
 
-This will install the `pxl8-sdk-php` dependency.
+This will copy the `pxl8-sdk-php` dependency into the plugin's vendor directory.
 
 ## Step 2: Start Docker Test Environment
 
@@ -301,12 +303,12 @@ cd /Users/chefbot/RiderProjects/pxl8/wordpress-plugin
 composer install
 ```
 
-### Composer dependencies error
+### SDK dependencies missing
 
 ```bash
-# Install dependencies on host (macOS)
+# Copy SDK files on host (macOS)
 cd /Users/chefbot/RiderProjects/pxl8/wordpress-plugin
-composer install
+cp -r ../pxl8-sdk-php vendor/pxl8/sdk-php
 
 # Restart WordPress container
 docker-compose -f docker-compose.test.yml restart wordpress

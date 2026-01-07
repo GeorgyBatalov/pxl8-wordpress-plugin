@@ -35,6 +35,8 @@ services:
     volumes:
       # Mount plugin directory
       - ./:/var/www/html/wp-content/plugins/pxl8:rw
+      # Mount SDK directory (for Composer path repository)
+      - ../pxl8-sdk-php:/pxl8-sdk-php:ro
       # Persistent WordPress data
       - wp_data:/var/www/html
     networks:
