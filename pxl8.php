@@ -61,7 +61,7 @@ function pxl8_activate() {
     // Set default options
     add_option('pxl8_base_url', 'https://img.pxl8.ru');
     add_option('pxl8_enabled', false);
-    add_option('pxl8_auto_optimize', true);
+    add_option('pxl8_auto_optimize', false); // OFF by default (prevents unexpected quota consumption)
     add_option('pxl8_default_quality', 85);
     add_option('pxl8_default_format', 'auto');
     add_option('pxl8_default_fit', 'cover');
