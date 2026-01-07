@@ -71,9 +71,11 @@ function pxl8_activate() {
 register_deactivation_hook(__FILE__, 'pxl8_deactivate');
 
 function pxl8_deactivate() {
-    // Clear transient cache
-    delete_transient('pxl8_usage_data');
+    // Clear transient cache (quota widget cache)
+    delete_transient('pxl8_quota_cache');
 
-    // Unschedule cron jobs (if any)
-    wp_clear_scheduled_hook('pxl8_background_upload');
+    // Log deactivation (if WP_DEBUG_LOG enabled)
+    if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
+        error_log('[PXL8] Plugin deactivated - transient cache cleared');
+    }
 }
