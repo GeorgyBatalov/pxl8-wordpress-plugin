@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: pxl8-test-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress_root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - pxl8-test
+
+  # WordPress
+  wordpress:
+    image: wordpress:latest
+    container_name: pxl8-test-wordpress
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8888:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress_password
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_DEBUG_LOG: 1
+    volumes:
+      # Mount plugin directory
+      - ./:/var/www/html/wp-content/plugins/pxl8:rw
+      # Persistent WordPress data
+      - wp_data:/var/www/html
+    networks:
+      - pxl8-test
+
+volumes:
+  db_data:
+  wp_data:
+
+networks:
+  pxl8-test:
+    driver: bridge

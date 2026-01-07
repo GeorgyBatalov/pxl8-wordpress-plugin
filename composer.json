@@ -9,6 +9,12 @@
       "email": "support@pxl8.ru"
     }
   ],
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../pxl8-sdk-php"
+    }
+  ],
   "require": {
     "php": ">=7.4",
     "pxl8/sdk-php": "^1.0"
