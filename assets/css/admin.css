@@ -1,0 +1,51 @@
+/**
+ * PXL8 Admin Styles
+ */
+
+/* Test Connection Result */
+#pxl8-test-result {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+/* Settings Page */
+.pxl8-settings-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.pxl8-settings-section h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+/* Form description warnings */
+.form-table .description strong {
+    color: #d63638;
+}
+
+/* API Key field */
+#pxl8_api_key {
+    font-family: 'Courier New', monospace;
+}
+
+/* Loading spinner */
+.pxl8-loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: pxl8-spin 1s linear infinite;
+}
+
+@keyframes pxl8-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
