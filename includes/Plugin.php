@@ -10,6 +10,9 @@ namespace Pxl8\WordPress;
 use Pxl8\WordPress\Admin\SettingsPage;
 use Pxl8\WordPress\Sdk\ClientFactory;
 use Pxl8\WordPress\Storage\Options;
+use Pxl8\WordPress\Storage\AttachmentMeta;
+use Pxl8\WordPress\Diagnostics\Logger;
+use Pxl8\WordPress\Media\UploadHandler;
 
 class Plugin {
     /**
@@ -28,6 +31,21 @@ class Plugin {
     private $settingsPage;
 
     /**
+     * @var AttachmentMeta
+     */
+    private $attachmentMeta;
+
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @var UploadHandler
+     */
+    private $uploadHandler;
+
+    /**
      * Initialize plugin
      */
     public function init() {
@@ -41,6 +59,17 @@ class Plugin {
             $this->settingsPage->init();
         }
 
+        // Initialize Day 2 components (upload handler)
+        $this->logger = new Logger();
+        $this->attachmentMeta = new AttachmentMeta();
+        $this->uploadHandler = new UploadHandler(
+            $this->options,
+            $this->clientFactory,
+            $this->attachmentMeta,
+            $this->logger
+        );
+        $this->uploadHandler->init();
+
         // Register hooks
         $this->registerHooks();
     }
@@ -52,7 +81,7 @@ class Plugin {
         // Admin hooks
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
 
-        // TODO: Add upload handler hooks (Day 2)
+        // Note: UploadHandler registers its own hooks in init()
         // TODO: Add URL rewriter hooks (Day 3)
     }
 
