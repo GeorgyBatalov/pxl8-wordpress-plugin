@@ -74,7 +74,7 @@ Once configured, the plugin automatically:
 
 ## Technical Specification
 
-See [WORDPRESS_PLUGIN_SPEC.md](../WORDPRESS_PLUGIN_SPEC.md) in the main repository for detailed technical specification.
+See [TECHNICAL_SPEC.md](./TECHNICAL_SPEC.md) for detailed technical specification (v1.0.1 Pragmatic MVP).
 
 ## Development
 
