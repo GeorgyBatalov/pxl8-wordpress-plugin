@@ -8,6 +8,7 @@
 namespace Pxl8\WordPress;
 
 use Pxl8\WordPress\Admin\SettingsPage;
+use Pxl8\WordPress\Admin\QuotaWidget;
 use Pxl8\WordPress\Sdk\ClientFactory;
 use Pxl8\WordPress\Storage\Options;
 use Pxl8\WordPress\Storage\AttachmentMeta;
@@ -30,6 +31,11 @@ class Plugin {
      * @var SettingsPage
      */
     private $settingsPage;
+
+    /**
+     * @var QuotaWidget
+     */
+    private $quotaWidget;
 
     /**
      * @var AttachmentMeta
@@ -58,16 +64,24 @@ class Plugin {
         // Initialize core components
         $this->options = new Options();
         $this->clientFactory = new ClientFactory($this->options);
+        $this->logger = new Logger();
+        $this->attachmentMeta = new AttachmentMeta();
 
         // Initialize admin components
         if (is_admin()) {
             $this->settingsPage = new SettingsPage($this->options, $this->clientFactory);
             $this->settingsPage->init();
+
+            // Initialize Day 4 components (quota widget)
+            $this->quotaWidget = new QuotaWidget(
+                $this->options,
+                $this->clientFactory,
+                $this->logger
+            );
+            $this->quotaWidget->init();
         }
 
         // Initialize Day 2 components (upload handler)
-        $this->logger = new Logger();
-        $this->attachmentMeta = new AttachmentMeta();
         $this->uploadHandler = new UploadHandler(
             $this->options,
             $this->clientFactory,
@@ -95,19 +109,14 @@ class Plugin {
         // Admin hooks
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
 
-        // Note: UploadHandler and UrlRewriter register their own hooks in init()
-        // TODO: Add quota widget hooks (Day 4)
+        // Note: UploadHandler, UrlRewriter, and QuotaWidget register their own hooks in init()
     }
 
     /**
      * Enqueue admin assets (CSS, JS)
      */
     public function enqueueAdminAssets($hook) {
-        // Only load on PXL8 settings page
-        if ($hook !== 'settings_page_pxl8') {
-            return;
-        }
-
+        // Load on all admin pages (settings page + dashboard for quota widget)
         // Enqueue admin CSS
         wp_enqueue_style(
             'pxl8-admin',
