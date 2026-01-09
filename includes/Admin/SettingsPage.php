@@ -39,8 +39,23 @@ class SettingsPage {
         add_action('admin_menu', [$this, 'addSettingsPage']);
         add_action('admin_init', [$this, 'registerSettings']);
 
+        // Add "Settings" link on plugins page
+        add_filter('plugin_action_links_pxl8/pxl8.php', [$this, 'addSettingsLink']);
+
         // AJAX handlers
         add_action('wp_ajax_pxl8_test_connection', [$this, 'handleTestConnection']);
+    }
+
+    /**
+     * Add "Settings" link on plugins page
+     *
+     * @param array $links
+     * @return array
+     */
+    public function addSettingsLink($links) {
+        $settings_link = '<a href="' . admin_url('options-general.php?page=pxl8') . '">Settings</a>';
+        array_unshift($links, $settings_link);
+        return $links;
     }
 
     /**

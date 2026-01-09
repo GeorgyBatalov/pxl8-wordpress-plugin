@@ -24,7 +24,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Pxl8\\WordPress\\": "includes/"
+      "Pxl8\\WordPress\\": "includes/",
+      "Pxl8\\": "vendor/pxl8/sdk-php/src/"
     }
   },
   "minimum-stability": "stable",
